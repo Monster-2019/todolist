@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { DatePicker } from "../ui/datePicker";
 import LabelIcon from "../LabelIcon";
@@ -28,10 +28,13 @@ export default function ListLayoutFooter({ handleAdd }: ListLayoutFooterProps) {
   const [name, setName] = useState<string>("");
   const [endDate, setEndDate] = useState<Date>();
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const add = () => {
     handleAdd({ name, endDate });
     setName("");
     setEndDate(undefined);
+    inputRef?.current?.focus();
   };
 
   return (
@@ -49,6 +52,7 @@ export default function ListLayoutFooter({ handleAdd }: ListLayoutFooterProps) {
         <div className="flex flex-row items-center mb-1">
           <Circle size={20} />
           <Input
+            ref={inputRef}
             className="flex-1 border-0 focus-visible:ring-0 focus-visible:ring-offset-0 hover:border-0 focus:border-0 shadow-none"
             placeholder="添加任务"
             type="text"

@@ -4,12 +4,13 @@ import { Circle, Star, Check } from "react-feather";
 import { Task } from "@/stores/taskStore";
 import { cn } from "@/lib/utils";
 import RouterLink from "next/link";
+import { Todo } from "@/app/global.types";
 
 interface ListItemProps {
-  task: Task;
+  task: Todo;
   href: string;
-  onComplete: (task: Task) => void;
-  onCollect: (task: Task) => void;
+  onComplete: (task: Todo) => void;
+  onCollect: (task: Todo) => void;
 }
 
 export default function ListItem({
@@ -23,7 +24,7 @@ export default function ListItem({
       <div className="flex flex-row justify-between items-center p-4 bg-white rounded-md mb-0.5">
         <div className="flex flex-row items-center">
           <div className="leading mr-2" onClick={() => onComplete(task)}>
-            {!task.isFinish ? (
+            {!task.isComplete ? (
               <Circle size={20} />
             ) : (
               <Check size={20} stroke="#51a2ff" />

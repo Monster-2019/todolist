@@ -5,29 +5,31 @@ import dbPromise from "@/lib/idb";
 
 const idbStorage = {
   getItem: async (name: string) => {
-    const db = await dbPromise(name);
+    const db = await dbPromise();
+    console.log(123);
+    console.log(name);
     const store: Task[] = await db.getAll(name);
 
     return JSON.stringify({ state: { tasks: store } });
   },
   setItem: async (name: string, value: any) => {
-    const data = JSON.parse(value);
-    const tasks = data.state.tasks;
-    if (tasks.length === 0) return;
-    const db = await dbPromise(name);
-    const tx = db.transaction(name, "readwrite");
-    const store = tx.objectStore(name);
-    const ids = await store.getAllKeys();
-    await Promise.all(
-      tasks.map((task: Task) =>
-        ids.includes(task.id!) ? store.put(task) : store.add(task)
-      )
-    );
-    await tx.done;
+    // const data = JSON.parse(value);
+    // const tasks = data.state.tasks;
+    // if (tasks.length === 0) return;
+    // const db = await dbPromise();
+    // const tx = db.transaction(name, "readwrite");
+    // const store = tx.objectStore(name);
+    // const ids = await store.getAllKeys();
+    // await Promise.all(
+    //   tasks.map((task: Task) =>
+    //     ids.includes(task.id!) ? store.put(task) : store.add(task)
+    //   )
+    // );
+    // await tx.done;
   },
   removeItem: async (name: string) => {
-    const db = await dbPromise(name);
-    await db.clear(name);
+    // const db = await dbPromise();
+    // await db.clear(name);
   },
 };
 
@@ -86,14 +88,14 @@ const useTaskStore = create<TodoStore>()(
       },
     }),
     {
-      name: "todo-task",
+      name: "todolist",
       storage: createJSONStorage(() => idbStorage),
-      partialize: (state) =>
-        Object.fromEntries(
-          Object.entries(state).filter(
-            ([key]) => !["add", "finishTasks"].includes(key)
-          )
-        ),
+      // partialize: (state) =>
+      //   Object.fromEntries(
+      //     Object.entries(state).filter(
+      //       ([key]) => !["add", "finishTasks"].includes(key)
+      //     )
+      //   ),
     }
   )
 );

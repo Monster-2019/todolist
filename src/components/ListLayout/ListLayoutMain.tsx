@@ -3,16 +3,16 @@
 import { useState } from "react";
 import { ChevronDown } from "react-feather";
 
-import { Task } from "@/stores/taskStore";
 import ListItem from "@/components/ListItem";
 import { cn } from "@/lib/utils";
+import { Todo } from "@/app/global.types";
 
 interface ListLayoutMainProps {
-  pendingTasks: Task[];
-  finishedTasks: Task[];
+  pendingTasks: Todo[];
+  finishedTasks: Todo[];
   finishedTasksLength: number;
-  handleFinish: (task: Task) => void;
-  handleCollect: (task: Task) => void;
+  handleFinish: (task: Todo) => void;
+  handleCollect: (task: Todo) => void;
 }
 
 export default function ListLayoutMain({
@@ -33,7 +33,7 @@ export default function ListLayoutMain({
       {pendingTasks.map((task, i) => {
         return (
           <ListItem
-            href={`/task/${task.id!}`}
+            href={`/todo/${task.id!}`}
             task={task}
             key={task.id}
             onComplete={handleFinish}
