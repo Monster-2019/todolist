@@ -13,9 +13,6 @@ const customStorage = {
   getItem: async (name: string) => {
     const db = await dbPromise();
     const lists: List[] = await db.getAll(name);
-    console.log(
-      lists.filter((list) => !list.isSystem).map((list) => list.name)
-    );
 
     return JSON.stringify({
       state: {

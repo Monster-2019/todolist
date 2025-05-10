@@ -11,7 +11,7 @@ interface ListLayoutMainProps {
   pendingTasks: Todo[];
   finishedTasks: Todo[];
   finishedTasksLength: number;
-  handleFinish: (task: Todo) => void;
+  handleComplete: (task: Todo) => void;
   handleCollect: (task: Todo) => void;
 }
 
@@ -19,7 +19,7 @@ export default function ListLayoutMain({
   pendingTasks,
   finishedTasks,
   finishedTasksLength,
-  handleFinish,
+  handleComplete,
   handleCollect,
 }: ListLayoutMainProps) {
   const [hideFinishList, setHideFinishList] = useState<boolean>(false);
@@ -30,13 +30,13 @@ export default function ListLayoutMain({
 
   return (
     <div className="flex-1 px-2">
-      {pendingTasks.map((task, i) => {
+      {pendingTasks.map((todo, i) => {
         return (
           <ListItem
-            href={`/todo/${task.id!}`}
-            task={task}
-            key={task.id}
-            onComplete={handleFinish}
+            href={`/todo/${todo.id!}`}
+            todo={todo}
+            key={todo.id}
+            onComplete={handleComplete}
             onCollect={handleCollect}
           />
         );
@@ -63,13 +63,13 @@ export default function ListLayoutMain({
           }
         )}
       >
-        {finishedTasks.map((task, i) => {
+        {finishedTasks.map((todo, i) => {
           return (
             <ListItem
-              href={`/task/${task.id!}`}
-              task={task}
-              key={task.id}
-              onComplete={handleFinish}
+              href={`/todo/${todo.id!}`}
+              todo={todo}
+              key={todo.id}
+              onComplete={handleComplete}
               onCollect={handleCollect}
             />
           );

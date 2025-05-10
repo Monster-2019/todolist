@@ -7,14 +7,15 @@ import {
   Grid,
   CheckCircle,
   Clipboard,
-  List,
+  List as ListIcon,
   Plus,
 } from "react-feather";
 import MenuItem from "@/components/MenuItem";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import dbPromise from "@/lib/idb";
 import { Lists } from "./global.types";
+import { addDays, startOfDay } from "date-fns";
 
 const ICONS: { [key: number]: React.ReactElement } = {
   1: <Sun size={20} color="orange" />,
@@ -24,8 +25,16 @@ const ICONS: { [key: number]: React.ReactElement } = {
   5: <Clipboard size={20} color="blue" />,
 };
 
+interface List {
+  name: string;
+  id: number;
+  count: number;
+  isSystem: boolean;
+}
+
 export default function Home() {
-  const [lists, setlists] = useState<Lists>([]);
+  const [lists, setlists] = useState<List[]>([]);
+
   useEffect(() => {
     const fetchData = async () => {
       const db = await dbPromise();
@@ -33,17 +42,43 @@ export default function Home() {
       const lists: Lists = await tx.objectStore("lists").getAll();
 
       const todoStore = tx.objectStore("todos");
+
       const counts = await Promise.all(
-        lists.map((list) =>
-          todoStore.index("listId").count(IDBKeyRange.only(list.id))
-        )
+        lists.map((list) => {
+          switch (list.id) {
+            case 1:
+              let startToday = startOfDay(new Date());
+              return todoStore
+                .index("dueDate")
+                .count(
+                  IDBKeyRange.bound(
+                    startToday,
+                    addDays(startToday, 1),
+                    false,
+                    true
+                  )
+                );
+            case 2:
+              return todoStore
+                .index("isCompleted_isCollected")
+                .count(IDBKeyRange.only([0, 1]));
+            case 3:
+              return todoStore.index("isCompleted").count(IDBKeyRange.only(0));
+            case 4:
+              return;
+            default:
+              return todoStore
+                .index("isCompleted_list")
+                .count(IDBKeyRange.only([0, list.id]));
+          }
+        })
       );
 
-      const newLists: Lists = lists.map((list, i) => ({
+      const newLists: List[] = lists.map((list, i) => ({
         ...list,
-        count: counts[i],
+        count: counts[i] as number,
       }));
-      // console.log(newLists);
+
       setlists(newLists);
     };
     fetchData();
@@ -61,17 +96,15 @@ export default function Home() {
         <div>
           {lists
             .filter((list) => list.isSystem)
-            .map((list) => {
-              return (
-                <MenuItem
-                  key={list.id}
-                  icon={ICONS[list.id]}
-                  title={list.name}
-                  count={list.count}
-                  href={"/list/" + list.id}
-                />
-              );
-            })}
+            .map((list) => (
+              <MenuItem
+                key={list.id}
+                icon={ICONS[list.id]}
+                title={list.name}
+                count={list.count}
+                href={"/list/" + list.id}
+              />
+            ))}
         </div>
         <div className="w-[92%] mx-[4%] h-0.5 bg-gray-100 my-2"></div>
         <div>
@@ -81,7 +114,7 @@ export default function Home() {
               return (
                 <MenuItem
                   key={list.id}
-                  icon={<List size={20} color="blue" />}
+                  icon={<ListIcon size={20} color="blue" />}
                   title={list.name}
                   count={list.count}
                   href={"/list/" + list.id}

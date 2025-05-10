@@ -1,11 +1,14 @@
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 import { MoreVertical, ArrowLeft } from "react-feather";
+import DropdownMenu from "../DropdownMenu";
+import { itemType } from "../components";
+import { useRouter } from "next/navigation";
 
 interface ListLayoutHeaderProps {
   title: String;
-  isMore?: boolean;
   theme?: "white" | "blue";
+  items?: itemType[];
+  onSelect?: (type: string) => void;
 }
 
 const colorTheme = {
@@ -21,9 +24,12 @@ const colorTheme = {
 
 export default function ListLayoutHeader({
   title,
-  isMore,
+  items,
   theme = "blue",
+  onSelect,
 }: ListLayoutHeaderProps) {
+  const router = useRouter();
+
   return (
     <header
       className={cn(
@@ -32,12 +38,17 @@ export default function ListLayoutHeader({
       )}
     >
       <div className="flex flex-row items-center">
-        <Link href="/">
-          <ArrowLeft color={colorTheme[theme]["icon"]} />
-        </Link>
+        <ArrowLeft
+          color={colorTheme[theme]["icon"]}
+          onClick={() => router.back()}
+        />
         <div className="ml-4">{title}</div>
       </div>
-      {isMore && <MoreVertical color={colorTheme[theme]["icon"]} />}
+      {items && items.length > 0 && (
+        <DropdownMenu items={items} onSelect={onSelect}>
+          <MoreVertical color={colorTheme[theme]["icon"]} />
+        </DropdownMenu>
+      )}
     </header>
   );
 }

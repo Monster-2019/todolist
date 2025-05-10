@@ -1,49 +1,40 @@
 "use client";
 
-import { Circle, Star, Check } from "react-feather";
-import { Task } from "@/stores/taskStore";
-import { cn } from "@/lib/utils";
-import RouterLink from "next/link";
-import { Todo } from "@/app/global.types";
+import { useRouter } from "next/navigation";
+import { MouseEvent } from "react";
 
 interface ListItemProps {
-  task: Todo;
-  href: string;
-  onComplete: (task: Todo) => void;
-  onCollect: (task: Todo) => void;
+  children: React.ReactElement;
+  leading?: React.ReactElement;
+  action?: React.ReactElement;
+  onLeading?: (e: MouseEvent<HTMLDivElement>) => void;
+  onAction?: (e: MouseEvent<HTMLDivElement>) => void;
 }
 
 export default function ListItem({
-  task,
-  onComplete,
-  onCollect,
-  href,
+  children,
+  leading,
+  action,
+  onLeading,
+  onAction,
 }: ListItemProps) {
+  const router = useRouter();
+
   return (
-    <RouterLink href={href}>
-      <div className="flex flex-row justify-between items-center p-4 bg-white rounded-md mb-0.5">
-        <div className="flex flex-row items-center">
-          <div className="leading mr-2" onClick={() => onComplete(task)}>
-            {!task.isComplete ? (
-              <Circle size={20} />
-            ) : (
-              <Check size={20} stroke="#51a2ff" />
-            )}
+    <div className="flex flex-row justify-between items-center h-16 px-4 bg-white rounded-md mb-0.5">
+      <div className="flex flex-row items-center">
+        {leading && (
+          <div className="leading mr-2" onClick={onLeading}>
+            {leading}
           </div>
-          <div className="leading">
-            <p className={cn("title", { "line-through": task.isFinish })}>
-              {task.name}
-            </p>
-          </div>
-        </div>
-        <div className="leading" onClick={() => onCollect(task)}>
-          {!task.isCollected ? (
-            <Star size={20} />
-          ) : (
-            <Star size={20} fill="#51a2ff" stroke="#51a2ff" />
-          )}
-        </div>
+        )}
+        {children}
       </div>
-    </RouterLink>
+      {action && (
+        <div className="action" onClick={onAction}>
+          {action}
+        </div>
+      )}
+    </div>
   );
 }

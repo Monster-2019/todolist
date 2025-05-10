@@ -1,8 +1,8 @@
 import { openDB } from "idb";
 
-const dbPromise = (version: number = 1) => {
+const dbPromise = (version: number = 2) => {
   return openDB("todolist", version, {
-    upgrade(db, oldVersion) {
+    upgrade(db, oldVersion, newVersion, transaction) {
       if (oldVersion < 1) {
         const listsStore = db.createObjectStore("lists", {
           keyPath: "id",
@@ -29,10 +29,23 @@ const dbPromise = (version: number = 1) => {
 
         todosStore.createIndex("listId", "listId"); // 列表ID索引
         todosStore.createIndex("dueDate", "dueDate"); // 截止日期索引
-        todosStore.createIndex("isImportant", "isImportant"); // 重要标记索引
+        todosStore.createIndex("isCollected", "isCollected"); // 重要标记索引
         todosStore.createIndex("isCompleted", "isCompleted"); // 完成状态索引
-        todosStore.createIndex("today_list", ["dueDate", "listId"]); // 今天+所属列表
-        todosStore.createIndex("important_list", ["isImportant", "listId"]); // 重要+所属列表
+        todosStore.createIndex("dueDate_list", ["dueDate", "listId"]); // 今天+所属列表
+        todosStore.createIndex("isCollected_list", ["isCollected", "listId"]); // 重要+所属列表
+        todosStore.createIndex("isCompleted_list", ["isCompleted", "listId"]); // 注意字段名一致性
+
+        db.createObjectStore("files", {
+          keyPath: "id",
+          autoIncrement: true,
+        });
+      }
+      if (oldVersion < 2) {
+        const todosStore = transaction.objectStore("todos");
+        todosStore.createIndex("isCompleted_isCollected", [
+          "isCompleted",
+          "isCollected",
+        ]);
       }
     },
   });
