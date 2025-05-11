@@ -259,7 +259,9 @@ export default function Edit({
               <Input
                 type="file"
                 className="absolute top-0 left-0 right-0 bottom-0 opacity-0"
-                onChange={handleUpload}
+                onChange={(e) => {
+                  handleUpload(e);
+                }}
               />
               {/* <Input type="file" /> */}
             </div>

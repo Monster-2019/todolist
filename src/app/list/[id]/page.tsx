@@ -42,9 +42,11 @@ export default function ListPage({ params }: { params: { id: number } }) {
 
   const { showAlertDialog, AlertDialog } = useAlertDialog();
 
-  const listNames = useListNamesStore((state) => state.listNames);
+  const lists = useListNamesStore((state) => state.lists);
   const add = useListNamesStore((state) => state.add);
   const delStore = useListNamesStore((state) => state.del);
+
+  const listNames = useMemo(() => lists.map((list) => list.name), [lists]);
 
   const router = useRouter();
 
@@ -83,8 +85,8 @@ export default function ListPage({ params }: { params: { id: number } }) {
       name: newName,
       isSystem: false,
     };
-    add(newName);
-    const id = await set("lists", 0, newList);
+    const id: number = await set("lists", 0, newList);
+    add({ ...newList, id });
     router.replace(`/list/${id}`);
   };
 
@@ -150,7 +152,7 @@ export default function ListPage({ params }: { params: { id: number } }) {
   const deleteAction = async () => {
     const promiseList = todos?.map((todo) => del("todos", todo.id!)) || [];
     await Promise.all([del("lists", list?.id!), ...promiseList]);
-    delStore(list?.name!);
+    delStore(list?.id!);
     router.back();
   };
 
@@ -280,9 +282,7 @@ export default function ListPage({ params }: { params: { id: number } }) {
               placeholder="输入列表标题"
               autoComplete="off"
               value={listName}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setListName(e.target?.value)
-              }
+              onChange={(e) => setListName(e.target.value)}
             />
           </div>
         </div>

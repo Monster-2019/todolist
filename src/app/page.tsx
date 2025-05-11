@@ -89,7 +89,9 @@ export default function Home() {
       <header className="flex flex-row justify-between p-4 box-border h-14">
         <div>Logo</div>
         <div>
-          <Search className="text-blue-400" />
+          <Link href="/todo/search">
+            <Search className="text-blue-400" />
+          </Link>
         </div>
       </header>
       <main className="flex-1 overflow-auto">

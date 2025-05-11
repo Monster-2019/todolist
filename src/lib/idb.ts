@@ -1,6 +1,6 @@
 import { openDB } from "idb";
 
-const dbPromise = (version: number = 2) => {
+const dbPromise = (version: number = 3) => {
   return openDB("todolist", version, {
     upgrade(db, oldVersion, newVersion, transaction) {
       if (oldVersion < 1) {
@@ -47,6 +47,10 @@ const dbPromise = (version: number = 2) => {
           "isCollected",
         ]);
       }
+      if (oldVersion < 3) {
+        const todosStore = transaction.objectStore("todos");
+        todosStore.createIndex("name", "name", { multiEntry: true });
+      }
     },
   });
 };
@@ -55,15 +59,15 @@ export const set = async (
   objectStore: string,
   id: number | string | undefined,
   val: any
-) => {
+): Promise<number> => {
   const db = await dbPromise();
   const tx = db.transaction(objectStore, "readwrite");
   const store = tx.objectStore(objectStore);
   const data = id && (await store.get(id));
   if (data) {
-    return await store.put({ ...data, ...val });
+    return (await store.put({ ...data, ...val })) as number;
   } else {
-    return await store.add(val);
+    return (await store.add(val)) as number;
   }
 };
 

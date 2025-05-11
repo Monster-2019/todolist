@@ -4,9 +4,9 @@ import dbPromise from "@/lib/idb";
 import { List } from "@/app/global.types";
 
 interface listNamesState {
-  listNames: string[];
-  add: (name: string) => void;
-  del: (name: string) => void;
+  lists: List[];
+  add: (list: List) => void;
+  del: (id: number) => void;
 }
 
 const customStorage = {
@@ -16,9 +16,7 @@ const customStorage = {
 
     return JSON.stringify({
       state: {
-        listNames: lists
-          .filter((list) => !list.isSystem)
-          .map((list) => list.name),
+        lists: lists.filter((list) => list.id > 4),
       },
     });
   },
@@ -29,15 +27,15 @@ const customStorage = {
 const useListNamesStore = create<listNamesState>()(
   persist(
     (set, get) => ({
-      listNames: [],
-      add: (name: string) =>
+      lists: [],
+      add: (list: List) =>
         set((state) => {
-          return { listNames: [...state.listNames, name] };
+          return { lists: [...state.lists, list] };
         }),
-      del: (name: string) =>
+      del: (id: number) =>
         set((state) => {
           return {
-            listNames: state.listNames.filter((list) => list !== name),
+            lists: state.lists.filter((list) => list.id !== id),
           };
         }),
     }),
