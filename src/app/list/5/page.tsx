@@ -21,7 +21,7 @@ const items: itemType[] = [
   // },
 ];
 
-export default function ListPage({ params }: { params: { id: number } }) {
+export default function ListPage() {
   const [todos, setTodos] = useState<Todos>();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function ListPage({ params }: { params: { id: number } }) {
       setTodos(listsresult);
     };
     fetchData();
-  }, [params]);
+  }, []);
 
   const pendingTodos = useMemo(
     () => todos?.filter((todo) => !todo.isCompleted) ?? [],
@@ -185,7 +185,7 @@ export default function ListPage({ params }: { params: { id: number } }) {
     <>
       <div className="flex flex-col overflow-hidden bg-blue-400 h-screen w-screen">
         <ListLayoutHeader title="任务" items={items} />
-        <div className="flex-1 px-2">
+        <div className="flex-1 px-2 overflow-y-auto pb-18">
           {pendingTodos.map((todo) => {
             return <NewListItem todo={todo} key={todo.id} />;
           })}

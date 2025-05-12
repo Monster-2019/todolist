@@ -171,7 +171,7 @@ export default function ListPage() {
   return (
     <div className="flex flex-col overflow-hidden bg-blue-400 h-screen w-screen">
       <ListLayoutHeader title="重要" items={items} />
-      <div className="flex-1 px-2">
+      <div className="flex-1 px-2 overflow-y-auto pb-18">
         {todos.map((todo) => {
           return <NewListItem todo={todo} key={todo.id} />;
         })}

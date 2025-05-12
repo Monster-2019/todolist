@@ -199,7 +199,7 @@ export default function ListPage() {
   return (
     <div className="flex flex-col overflow-hidden bg-blue-400 h-screen w-screen">
       <ListLayoutHeader title="我的一天" items={items} />
-      <div className="flex-1 px-2">
+      <div className="flex-1 px-2 overflow-y-auto pb-18">
         {pendingTodos.map((todo) => {
           return <NewListItem todo={todo} key={todo.id} />;
         })}

@@ -45,9 +45,11 @@ export default function ListLayoutHeader({
         <div className="ml-4">{title}</div>
       </div>
       {items && items.length > 0 && (
-        <DropdownMenu items={items} onSelect={onSelect}>
-          <MoreVertical color={colorTheme[theme]["icon"]} />
-        </DropdownMenu>
+        <DropdownMenu
+          items={items}
+          onSelect={onSelect}
+          trigger={<MoreVertical color={colorTheme[theme]["icon"]} />}
+        ></DropdownMenu>
       )}
     </header>
   );

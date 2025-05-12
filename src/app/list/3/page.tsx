@@ -204,7 +204,7 @@ export default function ListPage() {
   return (
     <div className="flex flex-col overflow-hidden bg-blue-400 h-screen w-screen">
       <ListLayoutHeader title="全部" items={items} />
-      <div className="flex-1 px-2">
+      <div className="flex-1 px-2 overflow-y-auto pb-18">
         {lists?.map((list) => {
           return (
             <Collapse total={list.todos.length} title={list.name} key={list.id}>

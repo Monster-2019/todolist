@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { List, Todo, Todos } from "@/app/global.types";
 import Collapse from "@/components/Collapse";
@@ -15,7 +15,7 @@ import { cn, formatDate, generateUniqueName } from "@/lib/utils";
 import useListNamesStore from "@/stores/listNameStore";
 import { isBefore, isToday, startOfDay } from "date-fns";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   Calendar,
   Check,
@@ -35,7 +35,8 @@ const items: itemType[] = [
   },
 ];
 
-export default function ListPage({ params }: { params: { id: number } }) {
+export default function ListPage() {
+  const params = useParams<{ id: string }>();
   const [list, setList] = useState<List>();
   const [todos, setTodos] = useState<Todos>();
   const [listName, setListName] = useState<string>("");
@@ -52,7 +53,7 @@ export default function ListPage({ params }: { params: { id: number } }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { id } = await params;
+      const { id } = params;
       if (!id) return;
       const db = await dbPromise();
       const listResult = (await db.get("lists", Number(id))) || {
@@ -254,7 +255,7 @@ export default function ListPage({ params }: { params: { id: number } }) {
           items={items}
           onSelect={handleSelect}
         />
-        <div className="flex-1 px-2">
+        <div className="flex-1 px-2 overflow-y-auto pb-18">
           {pendingTodos.map((todo) => {
             return <NewListItem todo={todo} key={todo.id} />;
           })}
