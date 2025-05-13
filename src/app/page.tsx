@@ -36,6 +36,19 @@ export default function Home() {
   const [lists, setlists] = useState<List[]>([]);
 
   useEffect(() => {
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      registerServiceWorker();
+    }
+  }, []);
+
+  async function registerServiceWorker() {
+    await navigator.serviceWorker.register("/sw.js", {
+      scope: "/",
+      updateViaCache: "none",
+    });
+  }
+
+  useEffect(() => {
     const fetchData = async () => {
       const db = await dbPromise();
       const tx = db.transaction(["lists", "todos"], "readonly");
@@ -87,7 +100,7 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden">
       <header className="flex flex-row justify-between p-4 box-border h-14">
-        <div>Logo</div>
+        <div>Monster Todo</div>
         <div>
           <Link href="/todo/search">
             <Search className="text-blue-400" />
