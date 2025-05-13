@@ -32,6 +32,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link
+        rel="manifest"
+        href="https://progressier.app/zKbzrqXgKbnjiI6rBbDX/progressier.json"
+      />
+      <script
+        defer
+        src="https://progressier.app/zKbzrqXgKbnjiI6rBbDX/script.js"
+      ></script>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
