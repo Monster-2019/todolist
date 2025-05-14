@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,10 +37,7 @@ export default function RootLayout({
         rel="manifest"
         href="https://progressier.app/zKbzrqXgKbnjiI6rBbDX/progressier.json"
       />
-      <script
-        defer
-        src="https://progressier.app/zKbzrqXgKbnjiI6rBbDX/script.js"
-      ></script>
+      <Script src="https://progressier.app/zKbzrqXgKbnjiI6rBbDX/script.js"></Script>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

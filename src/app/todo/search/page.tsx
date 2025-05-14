@@ -72,7 +72,6 @@ function SearchContent() {
       }
     };
     fetchDate();
-    console.log(q);
   }, []);
 
   const resultFilter: Todos = useMemo(() => {

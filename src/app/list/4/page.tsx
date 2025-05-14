@@ -58,34 +58,6 @@ export default function ListPage() {
     fetchData();
   }, []);
 
-  const handleAdd = async ({
-    name,
-    endDate,
-  }: {
-    name: string;
-    endDate: Date | undefined;
-  }) => {
-    const newTodo: Todo = {
-      name,
-      endDate,
-      listId: 5,
-      isCollected: 0,
-      isCompleted: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    const id = await set("todos", 0, newTodo);
-    newTodo["id"] = id as number;
-    setLists((lists) => {
-      return lists?.map((list) => {
-        if (list.id === 5) {
-          return { ...list, todos: [...list.todos, newTodo] };
-        }
-        return list;
-      });
-    });
-  };
-
   const handleComplete = (todo: Todo) => {
     const { id, ...data } = todo;
     const completeTime = data.isCompleted ? undefined : new Date();
@@ -209,7 +181,7 @@ export default function ListPage() {
       <div className="flex-1 px-2 overflow-y-auto pb-18">
         {lists?.map((list) => {
           return (
-            <Collapse title={list.name} key={list.id}>
+            <Collapse title={list.name} total={list.count!} key={list.id}>
               <>
                 {list.todos.map((todo) => {
                   return <NewListItem todo={todo} key={todo.id} />;
@@ -219,7 +191,6 @@ export default function ListPage() {
           );
         })}
       </div>
-      {/* <ListLayoutFooter handleAdd={handleAdd} /> */}
     </div>
   );
 }

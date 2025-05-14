@@ -13,7 +13,7 @@ interface DialogCompoentProps {
   title: string;
   onAction?: () => void;
   onCancel?: () => void;
-  actionDisabled: boolean;
+  actionDisabled?: boolean;
   actionText?: string;
   cancelText?: string;
 }

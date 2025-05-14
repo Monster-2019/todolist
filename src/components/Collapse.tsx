@@ -11,7 +11,7 @@ import {
 
 interface CollapseProps {
   children: React.ReactElement;
-  total?: number;
+  total: number;
   title: string;
 }
 
