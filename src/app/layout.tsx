@@ -33,11 +33,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <link
+      {/* <link
         rel="manifest"
         href="https://progressier.app/zKbzrqXgKbnjiI6rBbDX/progressier.json"
-      />
-      <Script src="https://progressier.app/zKbzrqXgKbnjiI6rBbDX/script.js"></Script>
+      /> */}
+      {/* <Script src="https://progressier.app/zKbzrqXgKbnjiI6rBbDX/script.js"></Script> */}
+      <link rel="manifest" href="/manifest.json" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

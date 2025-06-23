@@ -225,7 +225,7 @@ export default function Edit({
         </DatePicker>
       </DetailItem>
       {/* 添加文件 */}
-      <DetailItem className="overflow-hidden py-0">
+      {/* <DetailItem className="overflow-hidden py-0">
         <div className="flex flex-col w-full overflow-hidden">
           {todo?.files?.map((file) => {
             return (
@@ -263,11 +263,10 @@ export default function Edit({
                   handleUpload(e);
                 }}
               />
-              {/* <Input type="file" /> */}
             </div>
           </div>
         </div>
-      </DetailItem>
+      </DetailItem> */}
       {/* 添加备注 */}
       <DetailItem>
         <Textarea

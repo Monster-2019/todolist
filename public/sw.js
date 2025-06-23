@@ -1,22 +1,18 @@
-self.addEventListener('push', function (event) {
-    if (event.data) {
-        const data = event.data.json()
-        const options = {
-            body: data.body,
-            icon: data.icon || '/icon.png',
-            badge: '/badge.png',
-            vibrate: [100, 50, 100],
-            data: {
-                dateOfArrival: Date.now(),
-                primaryKey: '2',
-            },
-        }
-        event.waitUntil(self.registration.showNotification(data.title, options))
-    }
-})
+// This is the "Offline copy of pages" service worker
 
-self.addEventListener('notificationclick', function (event) {
-    console.log('收到通知点击。')
-    event.notification.close()
-    event.waitUntil(clients.openWindow('<https://your-website.com>'))
-})
+const CACHE = "pwabuilder-offline";
+
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
+
+workbox.routing.registerRoute(
+  new RegExp('/*'),
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: CACHE
+  })
+);

@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { isToday, isYesterday, isTomorrow, format, isThisYear } from "date-fns";
 import { zhCN } from "date-fns/locale";
+import { customAlphabet } from "nanoid";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -62,4 +63,9 @@ export function debounce<T extends unknown[]>(
       func.apply(this, args);
     }, delay);
   };
+}
+
+export function generatePeerId() {
+  const nanoid = customAlphabet("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10);
+  return nanoid();
 }
