@@ -56,7 +56,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: run-latest-docker-image
-              uses: appleboy/ssh-action@master
+              uses: appleboy/ssh-action@v1
               with:
                   host: ${{ secrets.HOST }}
                   username: root
