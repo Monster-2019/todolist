@@ -1,37 +1,24 @@
 {
-  "short_name": "M TodoList",
-  "dir": "auto",
-  "name": "M TodoList",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
-  "display": "standalone",
-  "start_url": "https://td.dongxin.co/?launchedfrom=homescreen",
-  "scope": "https://td.dongxin.co/",
-  "id": "https://td.dongxin.co/zKbzrqXgKbnjiI6rBbDX",
-  "prefer_related_applications": false,
+  "theme_color": "#8936FF",
+  "background_color": "#2EC6FE",
   "icons": [
     {
-      "src": "https://pwa.xyz/PYIX3tv6NCo9jqGysGdP%2FTyTLewvFKAOvyww.png?alt=media&amp;token=4fa18918-0122-401a-a94c-9eec6a70df88",
+      "purpose": "maskable",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
+      "src": "icon512_maskable.png",
+      "type": "image/png"
     },
     {
-      "src": "https://pwa.xyz/PYIX3tv6NCo9jqGysGdP%2FYGVnhJrbKkOjijL.png?alt=media&amp;token=f9d565c7-acf5-4a92-928f-cda2efdb9a9e",
+      "purpose": "any",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "src": "icon512_rounded.png",
+      "type": "image/png"
     }
   ],
-  "protocol_handlers": [
-    {
-      "protocol": "web+pwa",
-      "url": "https://td.dongxin.co/?launchedfrom=homescreen&amp;pwaprotocolredirect=%s"
-    },
-    {
-      "protocol": "web+monstertodolist",
-      "url": "https://td.dongxin.co/?launchedfrom=homescreen&amp;pwaprotocolredirect=%s"
-    }
-  ],
-  "lang": "zh"
+  "orientation": "any",
+  "display": "standalone",
+  "dir": "auto",
+  "lang": "zh-CN",
+  "name": "Monster TodoList",
+  "short_name": "M-Todo"
 }
