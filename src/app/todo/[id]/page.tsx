@@ -3,9 +3,9 @@
 import { fileType, Todo } from "@/app/global.types";
 import AlertDialog from "@/components/AlertDialog";
 import DetailItem from "@/components/DetailItem";
+import InputEdit from "@/components/InputEdit";
 import ListLayoutHeader from "@/components/ListLayout/ListLayoutHeader";
 import { DatePicker } from "@/components/ui/datePicker";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useAlertDialog from "@/hooks/useAlertDialog";
 import { del, get, set } from "@/lib/idb";
@@ -150,6 +150,14 @@ export default function Edit({
     [todo?.id]
   );
 
+  const debounceChangeTitle = useCallback(
+    debounce(async (value: string) => {
+      const { id } = todo!;
+      set("todos", id, { name: value });
+    }, 500),
+    [todo?.id]
+  );
+
   const changeRemark = async (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setTodo((todo) => ({
@@ -159,11 +167,29 @@ export default function Edit({
     debounceChangeRemark(value);
   };
 
+  const changeTitle = async (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTodo((todo) => ({
+      ...todo!,
+      name: value,
+    }));
+  };
+
+  const submitTitle = async (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (!value) {
+      toast(`标题为必填项`);
+      e.currentTarget.focus();
+      return;
+    }
+    debounceChangeTitle(value);
+  };
+
   return (
     <div className="bg-gray-100 h-screen">
       <ListLayoutHeader title={listName} theme="white" />
       <div className="flex flex-row justify-between items-center p-4 bg-white rounded-md mb-0.5 shadow-md rounded-none">
-        <div className="flex flex-row items-center">
+        <div className="flex-1 flex flex-row items-center">
           <div className="leading mr-2" onClick={handleComplete}>
             {!todo?.isCompleted ? (
               <Circle size={20} />
@@ -171,10 +197,13 @@ export default function Edit({
               <Check size={20} stroke="#51a2ff" />
             )}
           </div>
-          <div className="leading">
-            <p className={cn("title", { "line-through": todo?.isCompleted })}>
-              {todo?.name}
-            </p>
+          <div className="leading w-full">
+            <InputEdit
+              className={cn("title", { "line-through": todo?.isCompleted })}
+              value={todo?.name || ""}
+              onChange={changeTitle}
+              onBlur={submitTitle}
+            />
           </div>
         </div>
         <div className="leading" onClick={handleCollect}>
